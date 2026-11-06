@@ -104,21 +104,26 @@ export const DEFAULT_NICHES_DATA: NicheSectionData[] = [
         businessId: 'cafeteria-especial',
         localName: 'Café Roma',
         category: 'cafeteria',
-        href: '/local/cafeteria', // Enlace al mismo roadmap simulado de cafetería
+        href: '/local/cafeteria',
         stamps: 4,
         totalStamps: 10,
         nextRewardTitle: 'Café + Croissant',
         unavailable: false
+      },
+      {
+        id: 'card-cafe-3',
+        businessId: 'cafeteria-latte',
+        localName: 'Mocaccino Club',
+        category: 'cafeteria',
+        href: '/local/cafeteria',
+        stamps: 2,
+        totalStamps: 8,
+        nextRewardTitle: 'Latte Vainilla',
+        unavailable: true
       }
     ],
     hasMoreToDiscover: true,
     availableCount: 3
-  },
-  {
-    niche: NICHE_DEFINITIONS.heladeria,
-    cards: [], // Sin tarjeta activa todavía -> muestra DiscoverNicheCard
-    hasMoreToDiscover: true,
-    availableCount: 2
   },
   {
     niche: NICHE_DEFINITIONS.barberia,
@@ -133,9 +138,26 @@ export const DEFAULT_NICHES_DATA: NicheSectionData[] = [
         totalStamps: 20,
         nextRewardTitle: 'Corte + Barba',
         unavailable: true
+      },
+      {
+        id: 'card-barber-2',
+        businessId: 'barberia-studio',
+        localName: 'Studio Fade',
+        category: 'barberia',
+        href: '/local/barberia',
+        stamps: 3,
+        totalStamps: 12,
+        nextRewardTitle: 'Perfilado',
+        unavailable: true
       }
     ],
-    hasMoreToDiscover: false // No hay más comercios por ahora en la zona
+    hasMoreToDiscover: false
+  },
+  {
+    niche: NICHE_DEFINITIONS.heladeria,
+    cards: [], // Sin tarjeta activa todavía -> muestra DiscoverNicheCard
+    hasMoreToDiscover: true,
+    availableCount: 2
   },
   {
     niche: NICHE_DEFINITIONS.panaderia,
