@@ -98,10 +98,21 @@ export const DEFAULT_NICHES_DATA: NicheSectionData[] = [
         totalStamps: 30,
         nextRewardTitle: 'Tostado Especial',
         unavailable: false
+      },
+      {
+        id: 'card-cafe-2',
+        businessId: 'cafeteria-especial',
+        localName: 'Café Roma',
+        category: 'cafeteria',
+        href: '/local/cafeteria', // Enlace al mismo roadmap simulado de cafetería
+        stamps: 4,
+        totalStamps: 10,
+        nextRewardTitle: 'Café + Croissant',
+        unavailable: false
       }
     ],
     hasMoreToDiscover: true,
-    availableCount: 4
+    availableCount: 3
   },
   {
     niche: NICHE_DEFINITIONS.heladeria,
