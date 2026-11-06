@@ -2,125 +2,133 @@
 
 import React from 'react';
 import ScrollStack, { ScrollStackItem } from '@/components/registry/ScrollStack';
-import { ScrollStackCard } from './ScrollStackCard';
-
-export interface CardItem {
-  id: string;
-  localName: string;
-  imagePath: string;
-  /** Ruta de detalle del comercio. Ausente cuando el comercio todavía no está disponible. */
-  href?: string;
-  /** Sellos acumulados del cliente en este comercio. */
-  stamps: number;
-  /** Sellos totales del roadmap de este comercio. */
-  totalStamps: number;
-  /** Nombre del próximo premio pendiente. */
-  nextRewardTitle: string;
-  /**
-   * Cuando es true la tarjeta se muestra como no disponible, no navega y
-   * se etiqueta como "Próximamente". Es el caso de los comercios que todavía
-   * no tienen reglas ni billetera en el repositorio de la demo.
-   */
-  unavailable?: boolean;
-}
-
-/**
- * Datos de demostración del hub.
- *
- * Se hardcodean acá a propósito (y no en `loyaltyRepository`) porque la demo
- * se ajusta con datos, no con lógica de negocio: para cambiar lo que se
- * ve frente al comercio alcanza con editar este array.
- */
-export const DEFAULT_CARDS: CardItem[] = [
-  {
-    id: '1',
-    localName: 'Cafetería',
-    imagePath: '/images/cards/cafeteria/card-bg.jpg',
-    href: '/local/cafeteria',
-    stamps: 15,
-    totalStamps: 30,
-    nextRewardTitle: 'Tostado Especial'
-  },
-  {
-    id: '2',
-    localName: 'Heladería',
-    imagePath: '/images/cards/heladeria/card-bg.jpg',
-    href: '/local/heladeria',
-    stamps: 4,
-    totalStamps: 12,
-    nextRewardTitle: 'Cucurucho',
-    unavailable: true
-  },
-  {
-    id: '3',
-    localName: 'Barbería',
-    imagePath: '/images/cards/barberia/card-bg.jpg',
-    href: '/local/barberia',
-    stamps: 8,
-    totalStamps: 20,
-    nextRewardTitle: 'Corte + Barba',
-    unavailable: true
-  },
-  {
-    id: '4',
-    localName: 'Panadería',
-    imagePath: '/images/cards/panaderia/card-bg.jpg',
-    href: '/local/panaderia',
-    stamps: 2,
-    totalStamps: 10,
-    nextRewardTitle: 'Medialunas x2',
-    unavailable: true
-  }
-];
+import { SvgLoyaltyCard } from './SvgLoyaltyCard';
+import { DiscoverNicheCard } from './DiscoverNicheCard';
+import {
+  NicheCategory,
+  NicheSectionData,
+  DEFAULT_NICHES_DATA
+} from './nicheData';
 
 export interface CardContainerProps {
-  cards?: CardItem[];
+  selectedNiche?: NicheCategory;
+  nichesData?: NicheSectionData[];
+  onDiscoverClick?: (nicheName: string) => void;
 }
 
 /**
- * CardContainer: Apila las tarjetas de comercios con ScrollStack.
- * Cada tarjeta se fija (sticky) y se desplaza sobre la anterior al hacer scroll.
+ * CardContainer: Orquesta las tarjetas por secciones verticales de nichos.
+ * Dentro de cada nicho, las tarjetas se apilan con ScrollStack contenido.
+ * Permite filtrar por un rubro específico o ver todos los nichos apilados secuencialmente.
  */
-export const CardContainer: React.FC<CardContainerProps> = ({ cards = DEFAULT_CARDS }) => {
+export const CardContainer: React.FC<CardContainerProps> = ({
+  selectedNiche = 'all',
+  nichesData = DEFAULT_NICHES_DATA,
+  onDiscoverClick
+}) => {
+  // Filtramos según el tab seleccionado (o todos)
+  const filteredSections =
+    selectedNiche === 'all'
+      ? nichesData
+      : nichesData.filter((sec) => sec.niche.id === selectedNiche);
+
   return (
-    <section className="w-full h-full">
-      <ScrollStack
-        itemDistance={90}
-        itemStackDistance={22}
-        stackPosition="12%"
-        itemScale={0.05}
-        baseScale={0.92}
-        dimAmount={0.25}
-        blurAmount={1}
-        tiltAmount={4}
-        rotationAmount={1.5}
-        holdDistance={140}
-        smoothScroll
-        snap
-        innerPadding="px-4"
-        className="w-full h-full no-scrollbar"
-      >
-        {cards.map((card) => (
-          <ScrollStackItem
-            key={card.id}
-            padding="p-0"
-            background="transparent"
-            boxShadow="none"
-            itemClassName="h-[240px] rounded-[28px] overflow-hidden"
-          >
-            <ScrollStackCard
-              backgroundImage={card.imagePath}
-              href={card.href}
-              localName={card.localName}
-              stamps={card.stamps}
-              totalStamps={card.totalStamps}
-              nextRewardTitle={card.nextRewardTitle}
-              unavailable={card.unavailable}
-            />
-          </ScrollStackItem>
-        ))}
-      </ScrollStack>
-    </section>
+    <div className="w-full h-full overflow-y-auto no-scrollbar pb-16 space-y-8">
+      {filteredSections.map((section) => {
+        const hasCards = section.cards.length > 0;
+
+        return (
+          <section key={section.niche.id} className="w-full px-4">
+            {/* Cabecera del Nicho (solo visible en modo 'all') */}
+            {selectedNiche === 'all' && (
+              <div className="flex items-center justify-between mb-3 px-1">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-bold tracking-tight text-neutral-800">
+                    {section.niche.name}
+                  </h3>
+                  <span className="text-[11px] font-semibold text-neutral-400 bg-neutral-100 px-2 py-0.5 rounded-full border border-neutral-200/60">
+                    {section.cards.length}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* CASO A: Tiene tarjetas activas -> Mazo apilado ScrollStack */}
+            {hasCards ? (
+              <div className="w-full h-[280px]">
+                <ScrollStack
+                  itemDistance={75}
+                  itemStackDistance={18}
+                  stackPosition="8%"
+                  itemScale={0.04}
+                  baseScale={0.94}
+                  dimAmount={0.2}
+                  blurAmount={0}
+                  tiltAmount={3}
+                  rotationAmount={1.2}
+                  holdDistance={110}
+                  smoothScroll
+                  snap
+                  innerPadding="px-1"
+                  className="w-full h-full no-scrollbar"
+                >
+                  {/* 1. Tarjetas Activas del Cliente */}
+                  {section.cards.map((card) => (
+                    <ScrollStackItem
+                      key={card.id}
+                      padding="p-0"
+                      background="transparent"
+                      boxShadow="none"
+                      itemClassName="h-[230px] rounded-[24px] overflow-hidden"
+                    >
+                      <a
+                        href={card.href || '#'}
+                        className="block w-full h-full"
+                        aria-label={`Ver tarjeta de ${card.localName}`}
+                      >
+                        <SvgLoyaltyCard
+                          localName={card.localName}
+                          category={card.category}
+                          stamps={card.stamps}
+                          totalStamps={card.totalStamps}
+                          unavailable={card.unavailable}
+                        />
+                      </a>
+                    </ScrollStackItem>
+                  ))}
+
+                  {/* 2. Tarjeta Final de Invitación/Descubrimiento dentro del stack */}
+                  <ScrollStackItem
+                    key={`discover-${section.niche.id}`}
+                    padding="p-0"
+                    background="transparent"
+                    boxShadow="none"
+                    itemClassName="h-[230px] rounded-[24px] overflow-hidden"
+                  >
+                    <DiscoverNicheCard
+                      niche={section.niche}
+                      hasMoreToDiscover={section.hasMoreToDiscover}
+                      availableCount={section.availableCount}
+                      onClick={() => onDiscoverClick?.(section.niche.shortName)}
+                    />
+                  </ScrollStackItem>
+                </ScrollStack>
+              </div>
+            ) : (
+              /* CASO B: Sin tarjetas en este nicho -> Placeholder directo */
+              <div className="w-full px-1">
+                <DiscoverNicheCard
+                  niche={section.niche}
+                  hasMoreToDiscover={section.hasMoreToDiscover}
+                  availableCount={section.availableCount}
+                  onClick={() => onDiscoverClick?.(section.niche.shortName)}
+                />
+              </div>
+            )}
+          </section>
+        );
+      })}
+    </div>
   );
 };
 

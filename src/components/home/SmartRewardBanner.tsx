@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'motion/react';
 import { Gift, Sparkles, ChevronRight } from 'lucide-react';
-import type { CardItem } from '@/components/cards/CardContainer';
+import type { NicheCardItem } from '@/components/cards/nicheData';
 import {
   MOCK_BUSINESS_CAFETERIA,
   MOCK_RULES_CAFETERIA,
@@ -16,7 +16,15 @@ import {
 } from '@/services/demoSimulatorStorage';
 
 export interface SmartRewardBannerProps {
-  cards: CardItem[];
+  cards: Array<{
+    id: string;
+    localName: string;
+    href?: string;
+    stamps: number;
+    totalStamps: number;
+    nextRewardTitle: string;
+    unavailable?: boolean;
+  }>;
 }
 
 export type BannerState =
@@ -39,7 +47,7 @@ export type BannerState =
     }
   | null;
 
-export function computeBannerState(cards: CardItem[]): BannerState {
+export function computeBannerState(cards: SmartRewardBannerProps['cards']): BannerState {
   if (typeof window === 'undefined') return null;
 
   const cafeteriaCard = cards.find((c) => c.href === '/local/cafeteria');
