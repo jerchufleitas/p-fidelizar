@@ -14,7 +14,7 @@ export interface NicheFilterTabsProps {
   className?: string;
 }
 
-const TABS: NicheCategory[] = ['all', 'cafeteria', 'heladeria', 'barberia', 'panaderia'];
+const TABS: NicheCategory[] = ['all', 'cafeteria', 'barberia', 'heladeria', 'panaderia'];
 
 function renderTabIcon(iconName: NicheDefinition['iconName'], isActive: boolean) {
   const size = 15;

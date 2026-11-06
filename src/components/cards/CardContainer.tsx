@@ -53,20 +53,20 @@ export const CardContainer: React.FC<CardContainerProps> = ({
               </div>
             )}
 
-            {/* CASO A: Tiene tarjetas activas -> Mazo apilado ScrollStack */}
+            {/* CASO A: Tiene tarjetas activas -> Altura suficiente para que se vean dos tarjetas al mismo tiempo */}
             {hasCards ? (
-              <div className="w-full h-[280px]">
+              <div className="w-full h-[510px]">
                 <ScrollStack
-                  itemDistance={75}
-                  itemStackDistance={18}
-                  stackPosition="8%"
-                  itemScale={0.04}
-                  baseScale={0.94}
-                  dimAmount={0.2}
+                  itemDistance={12}
+                  itemStackDistance={14}
+                  stackPosition="4%"
+                  itemScale={0.03}
+                  baseScale={0.96}
+                  dimAmount={0.15}
                   blurAmount={0}
-                  tiltAmount={3}
-                  rotationAmount={1.2}
-                  holdDistance={110}
+                  tiltAmount={2}
+                  rotationAmount={1}
+                  holdDistance={90}
                   smoothScroll
                   snap
                   innerPadding="px-1"
@@ -79,7 +79,7 @@ export const CardContainer: React.FC<CardContainerProps> = ({
                       padding="p-0"
                       background="transparent"
                       boxShadow="none"
-                      itemClassName="h-[230px] rounded-[24px] overflow-hidden"
+                      itemClassName="h-[220px] rounded-[24px] overflow-hidden"
                     >
                       <a
                         href={card.href || '#'}
@@ -103,7 +103,7 @@ export const CardContainer: React.FC<CardContainerProps> = ({
                     padding="p-0"
                     background="transparent"
                     boxShadow="none"
-                    itemClassName="h-[230px] rounded-[24px] overflow-hidden"
+                    itemClassName="h-[220px] rounded-[24px] overflow-hidden"
                   >
                     <DiscoverNicheCard
                       niche={section.niche}

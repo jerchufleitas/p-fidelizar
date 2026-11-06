@@ -98,16 +98,21 @@ export const DEFAULT_NICHES_DATA: NicheSectionData[] = [
         totalStamps: 30,
         nextRewardTitle: 'Tostado Especial',
         unavailable: false
+      },
+      {
+        id: 'card-cafe-2',
+        businessId: 'cafeteria-roma',
+        localName: 'Café Roma',
+        category: 'cafeteria',
+        href: '/local/cafeteria',
+        stamps: 4,
+        totalStamps: 10,
+        nextRewardTitle: 'Café + Croissant',
+        unavailable: false
       }
     ],
     hasMoreToDiscover: true,
-    availableCount: 4
-  },
-  {
-    niche: NICHE_DEFINITIONS.heladeria,
-    cards: [], // Sin tarjeta activa todavía -> muestra DiscoverNicheCard
-    hasMoreToDiscover: true,
-    availableCount: 2
+    availableCount: 3
   },
   {
     niche: NICHE_DEFINITIONS.barberia,
@@ -124,11 +129,17 @@ export const DEFAULT_NICHES_DATA: NicheSectionData[] = [
         unavailable: true
       }
     ],
-    hasMoreToDiscover: false // No hay más comercios por ahora en la zona
+    hasMoreToDiscover: false
+  },
+  {
+    niche: NICHE_DEFINITIONS.heladeria,
+    cards: [], // Sin tarjeta activa -> abajo
+    hasMoreToDiscover: true,
+    availableCount: 2
   },
   {
     niche: NICHE_DEFINITIONS.panaderia,
-    cards: [], // Sin tarjeta activa todavía -> muestra estado Próximamente
+    cards: [], // Sin tarjeta activa -> abajo
     hasMoreToDiscover: false
   }
 ];
